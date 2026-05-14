@@ -1,35 +1,17 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const { PrismaClient } = require("@prisma/client")
-const prisma = new PrismaClient()
+const { createUser, findUserByEmail } = require("../repositories/auth.repository")
 async function register(userData) {
     const { email, password, name } = userData
-    if (!email || !password) {
-        throw new Error("Email and password are required")
-    }
     const hashedPassword = await bcrypt.hash(password, 10)
-    return await prisma.user.create({
-        data: {
-            email,
-            password: hashedPassword,
-            name: name || email,
-        },
-        select: {
-            id: true,
-            email: true,
-            name: true
-        }
-    })
+    const existingUser = await findUserByEmail(email)
+    if (existingUser) {
+        throw new Error("Email already exists")
+    }
+    return await createUser({ email, password: hashedPassword, name })
 }
 async function login(email, password) {
-    if (!email || !password) {
-        throw new Error("Email and password are requires")
-    }
-    const user = await prisma.user.findUnique({
-        where: {
-            email
-        }
-    })
+    const user = await findUserByEmail(email)
     if (!user) {
         throw new Error("User not found")
     }
