@@ -29,20 +29,29 @@ enum SubmissionStatus {
   COMPILATION_ERROR
 }
 
+enum InterviewStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String?
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  submissions Submission[]
+  id                      String      @id @default(cuid())
+  email                   String      @unique
+  password                String
+  name                    String?
+  role                    Role        @default(USER)
+  createdAt               DateTime    @default(now())
+  updatedAt               DateTime    @updatedAt
+  submissions             Submission[]
+  interviewsAsInterviewer Interview[]  @relation("InterviewerRelation")
+  interviewsAsCandidate   Interview[]  @relation("CandidateRelation")
 }
 
 model Problem {
-  id           String     @id @default(cuid())
-  slug         String     @unique
+  id           String      @id @default(cuid())
+  slug         String      @unique
   category     String
   tags         String[]
   hint         String[]
@@ -50,9 +59,10 @@ model Problem {
   description  String
   templateCode Json
   difficulty   Difficulty
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
   submissions  Submission[]
+  interviews   Interview[] // Implicit many-to-many
 }
 
 model Submission {
@@ -68,4 +78,23 @@ model Submission {
 
   problemId String
   problem   Problem          @relation(fields: [problemId], references: [id])
+}
+
+model Interview {
+  id            String          @id @default(cuid())
+  title         String
+  description   String?
+  scheduledAt   DateTime
+  status        InterviewStatus @default(SCHEDULED)
+  
+  interviewerId String
+  interviewer   User            @relation("InterviewerRelation", fields: [interviewerId], references: [id])
+  
+  candidateId   String
+  candidate     User            @relation("CandidateRelation", fields: [candidateId], references: [id])
+  
+  problems      Problem[]       // Implicit many-to-many
+  
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 }
