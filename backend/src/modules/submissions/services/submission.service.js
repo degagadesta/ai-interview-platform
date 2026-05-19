@@ -1,5 +1,6 @@
 const submissionRepository = require("../repositories/submission.repository");
 const problemRepository = require("../../problems/problem.repository");
+const { evaluateSubmission } = require("../execution/verdictEngine");
 
 async function createSubmission(userId, problemId, code, language) {
     try {
@@ -15,7 +16,17 @@ async function createSubmission(userId, problemId, code, language) {
             problemId
         });
 
-        return submission;
+        // Evaluate the code against the problem's test cases
+        const evaluation = await evaluateSubmission(code, language, problem.testCases || []);
+
+        // Update the database with the results and overall verdict status
+        const updatedSubmission = await submissionRepository.updateSubmissionStatus(
+            submission.id,
+            evaluation.status,
+            evaluation.results
+        );
+
+        return updatedSubmission;
     } catch (error) {
         throw error;
     }
