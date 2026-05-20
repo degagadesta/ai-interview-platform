@@ -1,5 +1,5 @@
 const submissionRepository = require("../repositories/submission.repository");
-const problemRepository = require("../../problems/problem.repository");
+const problemRepository = require("../../problems/repositories/problem.repository");
 const { evaluateSubmission } = require("../execution/verdictEngine");
 
 async function createSubmission(userId, problemId, code, language) {

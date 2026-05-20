@@ -1,8 +1,8 @@
 const express = require("express")
-const { createProblem, getProblemById, getProblems, updateProblem, deleteProblem } = require("./problem.controller")
-const { validateProblem, validateProblemId } = require("./problem.validator")
-const { authenticateUser } = require("../../middleware/auth.middleware")
-const { authorizeUser } = require("../../middleware/auth.middleware")
+const { createProblem, getProblemById, getProblems, updateProblem, deleteProblem } = require("../controllers/problem.controller")
+const { validateProblem, validateProblemId } = require("../validators/problem.validator")
+const { authenticateUser } = require("../../../middleware/auth.middleware")
+const { authorizeUser } = require("../../../middleware/auth.middleware")
 
 const router = express.Router()
 router.post("/", authenticateUser, authorizeUser(["ADMIN", "INTERVIEWER"]), validateProblem, createProblem)

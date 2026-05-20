@@ -1,4 +1,4 @@
-const { createProblem: createProblemRepo, getProblemById: getProblemByIdRepo, getProblems: getProblemsRepo, updateProblem: updateProblemRepo, deleteProblem: deleteProblemRepo, getProblemsBySlug: getProblemsBySlugRepo } = require("./problem.repository")
+const { createProblem: createProblemRepo, getProblemById: getProblemByIdRepo, getProblems: getProblemsRepo, updateProblem: updateProblemRepo, deleteProblem: deleteProblemRepo, getProblemsBySlug: getProblemsBySlugRepo } = require("../repositories/problem.repository")
 async function createProblem(problemData) {
     try {
         const { title, description, difficulty, category, slug, tags, hint, templateCode } = problemData

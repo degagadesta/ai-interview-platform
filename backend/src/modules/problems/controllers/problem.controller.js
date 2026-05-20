@@ -1,4 +1,4 @@
-const { createProblem: createProblemService, getProblemById: getProblemByIdService, getProblems: getProblemsService, updateProblem: updateProblemService, deleteProblem: deleteProblemService } = require("./problem.service")
+const { createProblem: createProblemService, getProblemById: getProblemByIdService, getProblems: getProblemsService, updateProblem: updateProblemService, deleteProblem: deleteProblemService } = require("../services/problem.service")
 async function createProblem(req, res, next) {
     try {
         const problem = await createProblemService(req.body)
