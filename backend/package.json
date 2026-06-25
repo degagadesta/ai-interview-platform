@@ -3,7 +3,12 @@
     "version": "1.0.0",
     "main": "src/server.js",
     "scripts": {
-        "dev": "nodemon src/server.js"
+        "dev": "nodemon src/server.js",
+        "start": "node src/server.js",
+        "migrate": "npx prisma migrate dev",
+        "migrate:prod": "npx prisma migrate deploy",
+        "seed": "node prisma/seed.js",
+        "studio": "npx prisma studio"
     },
     "dependencies": {
         "@prisma/client": "^6.19.3",
@@ -16,6 +21,7 @@
         "joi": "^17.13.3",
         "jsonwebtoken": "^9.0.2",
         "morgan": "^1.10.0",
-        "prisma": "^6.19.3"
+        "prisma": "^6.19.3",
+        "socket.io": "^4.7.2"
     }
 }

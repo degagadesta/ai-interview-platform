@@ -9,5 +9,9 @@ module.exports = {
         apiUrl: process.env.JUDGE0_API_URL || "https://judge0-ce.p.rapidapi.com",
         apiKey: process.env.JUDGE0_API_KEY,
         apiHost: process.env.JUDGE0_API_HOST || "judge0-ce.p.rapidapi.com"
+    },
+    openai: {
+        apiKey: process.env.OPENAI_API_KEY,
+        model: process.env.OPENAI_MODEL || "gpt-4"
     }
 };
